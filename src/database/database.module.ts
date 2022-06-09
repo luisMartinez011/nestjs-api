@@ -5,21 +5,23 @@ import configuration from 'src/configuration';
 
 @Global()
 @Module({
-    imports:[MongooseModule.forRootAsync({
-        useFactory: async (configService: ConfigType<typeof configuration>) => {
-          const {
-            user,
-            password,
-            host,
-            port,
-            connection
-          }= configService.mongo; 
-          return {
-            uri: `${connection}://${user}:${password}@${host}:${port}/?authMechanism=DEFAULT`
-          }
-        },
-        inject: [configuration.KEY],
-      })
-      ]
+  imports: [MongooseModule.forRootAsync({
+    useFactory: async (configService: ConfigType<typeof configuration>) => {
+      const {
+        user,
+        password,
+        host,
+        port,
+        connection,
+        dbName
+      } = configService.mongo;
+      return {
+        uri: `${connection}://${user}:${password}@${host}:${port}/?authMechanism=DEFAULT`,
+        dbName
+      }
+    },
+    inject: [configuration.KEY],
+  })
+  ]
 })
-export class DatabaseModule {}
+export class DatabaseModule { }
