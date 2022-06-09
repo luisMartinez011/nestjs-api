@@ -14,7 +14,6 @@ import configuration from 'src/configuration';
             port,
             connection
           }= configService.mongo; 
-          console.log(configService.mongo)
           return {
             uri: `${connection}://${user}:${password}@${host}:${port}/?authMechanism=DEFAULT`
           }
