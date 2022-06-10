@@ -36,3 +36,5 @@ lerna-debug.log*
 /mongo_data
 
 .env
+.git
+.vscode
