@@ -20,15 +20,19 @@ export class ProductsService {
 
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findOne(id: number): Promise<Product> {
+    return this.productModel.findOne({ _id: id }).exec();
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: number, updateProductDto: UpdateProductDto): Promise<Product> {
+    return await this.productModel
+      .findByIdAndUpdate(id, updateProductDto, { new: true })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async delete(id: string) {
+    const deletedProduct = await this.productModel
+      .findByIdAndRemove({ _id: id })
+      .exec();
+    return deletedProduct;
   }
 }
