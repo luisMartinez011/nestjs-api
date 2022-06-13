@@ -30,7 +30,7 @@ export class ProductsController {
 
   @Get(':id')
   async findOne(@Res() response, @Param('id') id: string) {
-    const product = await this.productsService.findOne(+id);;
+    const product = await this.productsService.findOne(id);
     return response.status(HttpStatus.OK).json({
       product
     })

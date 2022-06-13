@@ -20,7 +20,7 @@ export class ProductsService {
 
   }
 
-  async findOne(id: number): Promise<Product> {
+  async findOne(id: string): Promise<Product> {
     return this.productModel.findOne({ _id: id }).exec();
   }
 
@@ -35,4 +35,5 @@ export class ProductsService {
       .exec();
     return deletedProduct;
   }
+
 }

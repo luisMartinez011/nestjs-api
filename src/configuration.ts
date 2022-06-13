@@ -8,6 +8,9 @@ export default registerAs('configuration', () => ({
         port: process.env.PORT,
         connection: process.env.CONNECTION,
         dbName: process.env.DB_NAME
+    },
+    auth: {
+        roles: process.env.API_ROLES
     }
 
 }));

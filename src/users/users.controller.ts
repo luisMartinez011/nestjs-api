@@ -1,14 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Res, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { response } from 'express';
+import { PasarGuard } from 'src/auth/pasar.guard';
+// import { Roles } from 'src/auth/decorator/roles.decorator';
+import { AuthGuard } from '@nestjs/passport';
+import { LocalAuthGuard } from 'src/auth/guard/local-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 
 @ApiTags("Users")
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
+
 
   @Post()
   async create(@Res() response, @Body() createUserDto: CreateUserDto) {
@@ -18,6 +24,7 @@ export class UsersController {
     })
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(@Res() response) {
     const user = await this.usersService.findAll();
@@ -28,9 +35,10 @@ export class UsersController {
 
   @Get(':id')
   async findOne(@Res() response, @Param('id') id: string) {
-    const user = await this.usersService.findOne(+id);;
+    const user = await this.usersService.findByEmail(id);
+
     return response.status(HttpStatus.OK).json({
-      user
+      email: user.email
     })
   }
 
