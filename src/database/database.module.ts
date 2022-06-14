@@ -11,12 +11,11 @@ import configuration from 'src/configuration';
         user,
         password,
         host,
-        port,
         connection,
         dbName
       } = configService.mongo;
       return {
-        uri: `${connection}://${user}:${password}@${host}:${port}/?authMechanism=DEFAULT`,
+        uri: `${connection}://${user}:${password}@${host}.tgyb0.mongodb.net/?retryWrites=true&w=majority`,
         dbName
       }
     },

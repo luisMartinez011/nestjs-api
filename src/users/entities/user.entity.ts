@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { Role } from 'src/auth/models/role.enum';
+import { Product } from 'src/products/entities/product.entity';
 
 export type UserDocument = User & Document;
 
@@ -14,6 +15,9 @@ export class User {
 
     @Prop({ required: true })
     role: string;
+
+    @Prop({ type: [{ type: Types.ObjectId, ref: Product.name }] })
+    products: Types.Array<Product>;
 
 }
 
