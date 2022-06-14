@@ -5,17 +5,21 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { response } from 'express';
 import { PasarGuard } from 'src/auth/pasar.guard';
-// import { Roles } from 'src/auth/decorator/roles.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { LocalAuthGuard } from 'src/auth/guard/local-auth.guard';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
+import { Roles } from 'src/auth/decorator/roles.decorator';
+import { Role } from 'src/auth/models/role.enum';
+import { RolesGuard } from 'src/auth/guard/roles.guard';
+import { Public } from 'src/auth/decorator/public.decorator';
 
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags("Users")
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
-
+  @Public()
   @Post()
   async create(@Res() response, @Body() createUserDto: CreateUserDto) {
     const user = await this.usersService.create(createUserDto);
@@ -24,7 +28,7 @@ export class UsersController {
     })
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   @Get()
   async findAll(@Res() response) {
     const user = await this.usersService.findAll();
